@@ -12,11 +12,11 @@ using namespace std;
 
 double max(vector<double> vec, int startVal, double value);
 double min(vector<double> data, int startVal, double value);
-double printAvg(vector<double> data, double sum, int start);
-double printStdev(vector<double> data, double mean, int start);
+double printAvg(vector<double> data, double sum, int startVal);
+double printStdev(vector<double> data, double mean, int startVal);
 
 int main() {
-    // read the file and make vectors to store all the values
+    // read the file and make vectors to store all the values(variables needed within the code)
    vector<double> sepalLength;
    vector<double> sepalWidth;
    vector<double> petalLength;
@@ -25,7 +25,7 @@ int main() {
    double sWidth;
    double pLength;
    double pWidth;
-   string species;
+  string species;
 
 
     string iris; 
@@ -36,17 +36,27 @@ int main() {
         cout << "File was unable to be open" << endl;
         return 1; 
     }
-    //once the data is able to be read properly
-    while(getline(ifile, iris, ',')) {
-        stringstream ss(iris); // parses the newly grabbed data
-        while(ss >> sLength >>sWidth >> pLength >> pWidth)
-            sepalLength.push_back(sLength);
-            sepalWidth.push_back(sWidth);
-            petalLength.push_back(pLength);
-            petalWidth.push_back(pWidth);
 
-            getline(ss,species); //adds this in
-        }  
+    //EDIT: getline 
+    //once the data is able to be read properly
+
+    //stod is not converting properly (throwing an exception)
+    string line;
+    while(getline(ifile,iris)) { //grab all 150 lines
+        stringstream ss(iris); // grabs one line and parses the data
+        getline(ss, line, ','); //grabs the line 
+        //cout << line <<  endl;
+        sepalLength.push_back(stod(line));  // this is not converting 
+        getline(ss, line,',');  
+        sepalWidth.push_back(stod(line));
+        getline(ss, line,','); 
+        petalLength.push_back(stod(line)); 
+        getline(ss, line,','); 
+        petalWidth.push_back(stod(line));
+        getline(ss, line,',');
+        getline(ss,line); //adds this in
+//unable to do a delimiter while loop instead manually do it for each text line and pushback into the vectors
+    }       
     //using this information -- "5.1,3.5,1.4,0.2,Iris-setosa" this is one string
     // must parse into different pieces to analyze the numbers (currently in string form)
 
@@ -55,31 +65,7 @@ int main() {
         double sum2 = 0.0;
         double sum3 = 0.0;
         double sum4 = 0.0;
-    //     double val1 = 0.0;
-    //     double val2 = 0.0;
-    //     double val3 = 0.0;
-    //     double val4 = 0.0; 
-    // for(size_t i = 0; i< 49; i ++) { // accounts for the first species Seratosa
-    //     //find averages (sums)
-    //     sum1+= sepalLength[i];
-    //     sum2+= sepalWidth[i];
-    //     sum3+= petalLength[i];
-    //     sum4+= petalWidth[i];
-    //     // if statements for finding the min and max value
-    //     if(sepalLength[i] < val1) {
-    //         val1 = sepalLength[i]; // it becomes the new min value
-    //     }
-    //      if(sepalWidth[i] < val1) {
-    //         val1 = sepalWidth[i]; // it becomes the new min value
-    //     }
-    //     if()
-
-    //using the functions made below find the values
-
-
-
-
-    //}
+// data analysis
 
     //mean values (Seratosa)
     double seratosaSLengthAvg = printAvg(sepalLength,sum1,0);
@@ -181,7 +167,7 @@ return 0;
 //find the max value
 double max(vector<double> vec, int startVal, double value) {
     value = 0.0;
-    for(int i  = startVal; i < i+50; i ++) {
+    for(int i  = startVal; i < startVal+50; i ++) {
         if(vec[i] > value) {
             value = vec[i];
         }
@@ -191,8 +177,8 @@ double max(vector<double> vec, int startVal, double value) {
 
 //finds the minimum value
 double min(vector<double> data, int startVal, double value) {
-    value = 0.0;
-    for(int i = startVal; i < i+50; i ++) {
+    value = 20.0; //reason its 0 is because nothing is less than 0
+    for(int i = startVal; i < startVal+50; i ++) {
         if(data[i] < value) {
             value = data[i];
         }
@@ -200,9 +186,9 @@ double min(vector<double> data, int startVal, double value) {
     return value;
 }
 
-double printAvg(vector<double> data, double sum, int start) {
+double printAvg(vector<double> data, double sum, int startVal) {
     sum = 0.0;
-    for(size_t i = start; i < i+50; i++) {
+    for(size_t i = startVal; i < startVal+50; i++) {
         sum += data[i];
     }
     double average = sum/50;
@@ -212,9 +198,9 @@ double printAvg(vector<double> data, double sum, int start) {
 //variance is needed per data point
 //should the vatiance be added all together?
 
-double printStdev(vector<double> data, double mean, int start) {
+double printStdev(vector<double> data, double mean, int startVal) {
     double var = 0.0;
-    for(size_t i = start; i < i+50; i++) {
+    for(size_t i = startVal; i < startVal+50; i++) {
         var += pow((data[i]-mean),2); // does that first point -- should add everything
     }
     //once we have variance (sum of all the values
@@ -225,3 +211,11 @@ double printStdev(vector<double> data, double mean, int start) {
     return stdev;
 }
 
+
+
+//overall technique is fine
+//getline for species ( 2D vectors: first dimesnion (species each one))
+// member functions 
+//seg faukt the vector size was 0 (improper adding of the line to the vector)
+//additional errors: delimiter must manually fix it, so the push_back will do proper function using another line then converting it
+// change the indices into startVal+ 50 (this is done to )
