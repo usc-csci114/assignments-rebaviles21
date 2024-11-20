@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <fstream>
+#include<fstream>
 #include<sstream>
 #include<algorithm>
 #include <utility>
@@ -24,7 +24,7 @@ struct compclass {
 
 //prototype
 size_t index_find(vector< pair<string, int> > index, string key);
-void findElement(vector <Element> elements, size_t index);
+void printElement(vector <Element> elements, size_t index);
 
 int main(int argc, char* argv[])
 {
@@ -85,62 +85,49 @@ int main(int argc, char* argv[])
 	bool wantToQuit = false;
 	int userNumber;
 	string userInput;
-	string userString;
+	//string userString;
 
 	while(wantToQuit == false) {
 		// want to let in int variable
 		cout<< "Which element are you interested in??" << endl;
-		cout<< "Do you want to search for the period element number OR period element name?? N for Number or S for Name" << endl;
+		// cout<< "Do you want to search for the period element number OR period element name?? N for Number or S for Name" << endl;
 		cout << "To quit just write quit" << endl;
 		cin >> userInput; //grab the information
-		if(userInput == "quit") {
-			wantToQuit = true;
-			break;
-		}
-		if(userInput == "N") {
-			cout << "Enter your period element number you want to search!!" << endl;
-			cin >> userNumber;
-
+		
+		if(isdigit(userInput[0])) { // checks the first character to see if it is a value -- number 
+			userNumber = stoi(userInput);
 			if(userNumber >= 1 or userNumber <= 118) { // within the range of the elements
 				cout << "Element Number: " << userNumber;
-
-				findElement(elements,userNumber);
-				
+				printElement(elements,userNumber);
 			}
-
 			else{ // out of range 
 				cout << "Invalid Range. Element does not exist" << endl;
 			}
 
 		}
 		// based if it is a string or not
-		if(userInput == "S" or userInput == "s") {
-			cin >> userString; 
-
-			if(userString.size() == 1 or userString.size() == 2 ){ // length of the string size 1
-				size_t elementSymbol =index_find(symbol_index,userString);
+		if(!isdigit(userInput[0])) { // only a string so it should be false
+			if(userInput == "quit") { // if the input is a string and equals this
+				wantToQuit = true;
+				break;
+			}
+			if(userInput.size() == 1 or userInput.size() == 2 ){ // length of the string size 1
+				size_t elementSymbol =index_find(symbol_index,userInput);
 				//cout << "Symbol: " << elementSymbol << endl;
-				findElement(elements,elementSymbol);
+				printElement(elements,elementSymbol);
 			} 
-			else if (userString.size() > 2 ) { // for the name
-				size_t elementName = index_find(name_index,userString);
-				findElement(elements,elementName);
-				
+			else if (userInput.size() > 2 ) { // for the name
+				size_t elementName = index_find(name_index,userInput);
+				printElement(elements,elementName);	
 			}
 			else{
 			cout << "Not Found!" << endl;
 			}
 		}
 		cout<< "Do you want to search for the period element number OR period element name?? N for Number or S for Name" << endl;
-		cin >> userString; 
+		cin >> userInput; 
 	}
-		
-
-// how to get it to search properly	
-// rewrite to get the input to choose either number or string
-// how to print out the information in the element vector
 	
-
 }
 
 //function:
@@ -165,7 +152,7 @@ size_t index_find(vector< pair<string, int> > index, string key) {
 	
 }
 
-void findElement(vector <Element> elements, size_t index) {
+void printElement(vector <Element> elements, size_t index) {
 	cout << "Name: "<< elements[index].name << endl;
 	cout<< "Symbol: " << elements[index].symbol << endl;
 	cout << "Atomic Mass: " << elements[index].atomic_mass << endl;
