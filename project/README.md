@@ -41,4 +41,3 @@
 #### A ‘project’ sub-directory in your Github Classroom “assignments” repo will be created.
 - Develop your project in this directory, including the report (final delivery format PDF)
 - `git commit` and `git push` before Tuesday December 17th at 6pm
-- 
