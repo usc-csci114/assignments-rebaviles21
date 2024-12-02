@@ -38,6 +38,12 @@
 - Include your code, formatted nicely.
 - Include instructions for how to download your data and compile and run your code. 
 
+#### E-mail Professor Goodney a project proposal by Friday December 6th at 9am
+- Briefly describe the dataset you’re going to use
+- Briefly describe the hypothesis you plan on testing
+- Briefly describe the data processing technique(s) you plan on using
+- Briefly describe the plots/visualizations you plan on generating
+
 #### A ‘project’ sub-directory in your Github Classroom “assignments” repo will be created.
 - Develop your project in this directory, including the report (final delivery format PDF)
 - `git commit` and `git push` before Tuesday December 17th at 6pm
